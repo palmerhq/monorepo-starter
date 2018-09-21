@@ -1,0 +1,7 @@
+{
+  "lerna": "2.8.0",
+  "packages": ["mai-ui", "mai-common", "mai-web", "mai-admin", "mai-central"],
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "version": "1.0.0"
+}

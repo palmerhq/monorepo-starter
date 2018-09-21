@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "scripts": {
+    "clean": "lerna clean",
+    "bootstrap": "lerna bootstrap",
+    "test": "CI=true lerna run test --stream",
+    "start": "lerna run --parallel start",
+    "prepare": "rimraf mono-ui/build && rimraf mono-common/build && lerna run prepare",
+    "build": "npm run prepare && lerna run --parallel build"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.28",
+    "lerna": "2.8.0",
+    "rimraf": "^2.6.2",
+    "typescript": "^2.5.2"
+  },
+  "workspaces": ["mono-ui", "mono-common", "mono-cra", "mono-razzle"]
+}

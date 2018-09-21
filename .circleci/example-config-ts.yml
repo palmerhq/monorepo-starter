@@ -1,0 +1,228 @@
+version: 2
+
+defaults: &defaults
+  docker:
+    - image: circleci/node:8.2.1
+  working_directory: ~/monorepo-builds
+
+jobs:
+  clone_and_hash:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-project-metadata-{{ .Branch }}
+            - v1-project-metadata-master
+
+      - run:
+          name: Initialize project metadata
+          command: |
+            mkdir -p .project-metadata
+            touch .mono-razzle-hash
+            touch .mono-cra-hash
+            touch .mono-common-hash
+            touch .mono-ui-hash
+
+      - run:
+          name: Hash projects
+          command: |
+            git log --pretty=format:'%H' -n 1 -- mono-cra > .mono-cra-hash.new
+            git log --pretty=format:'%H' -n 1 -- mono-razzle > .mono-razzle-hash.new
+            git log --pretty=format:'%H' -n 1 -- mono-common > .mono-common-hash.new
+            git log --pretty=format:'%H' -n 1 -- mono-ui > .mono-ui-hash.new
+
+      - run:
+          name: Determine changed projects
+          command: |
+            if ! diff .mono-cra-hash{,.new} > /dev/null; then
+              touch .project-metadata/.mono-cra-changed
+            fi
+
+            if ! diff .mono-razzle-hash{,.new} > /dev/null; then
+              touch .project-metadata/.mono-razzle-changed
+            fi
+
+            if ! diff .mono-common-hash{,.new} > /dev/null; then
+              touch .project-metadata/.mono-common-changed
+            fi
+
+            if ! diff .mono-ui-hash{,.new} > /dev/null; then
+              touch .project-metadata/.mono-ui-changed
+            fi
+
+      - run:
+          name: Set current project hashes
+          command: |
+            mv .mono-cra-hash{.new,}
+            mv .mono-razzle-hash{.new,}
+            mv .mono-common-hash{.new,}
+            mv .mono-ui-hash{.new,}
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .project-metadata
+
+      - save_cache:
+          key: v1-project-metadata-{{ .Branch }}-{{ epoch }}
+          paths:
+            - .mono-cra-hash
+            - .mono-razzle-hash
+            - .mono-common-hash
+            - .mono-ui-hash
+
+  bootstrap:
+    <<: *defaults
+    working_directory: ~/monorepo-builds
+    steps:
+      - checkout: { path: ~/monorepo-builds }
+      - attach_workspace: { at: . }
+      - run:
+          name: Install top-level dependencies
+          command: yarn install
+      - run:
+          name: Bootstrap via Lerna
+          command: yarn bootstrap
+
+  common:
+    <<: *defaults
+    working_directory: ~/monorepo-builds
+    steps:
+      - checkout: { path: ~/monorepo-builds }
+      - attach_workspace: { at: . }
+      - run:
+          name: Check whether project changed
+          command: |
+            if [ -e .project-metadata/.mono-common-changed ]; then
+              echo "let's do this"
+            else
+              echo "nothing to do"
+            fi
+
+      - run:
+          name: Test common
+          command: yarn test --scope=@mono/common
+
+  ui:
+    <<: *defaults
+    working_directory: ~/monorepo-builds
+    steps:
+      - checkout: { path: ~/monorepo-builds }
+      - attach_workspace: { at: . }
+      - run:
+          name: Check whether project changed
+          command: |
+            if [ -e .project-metadata/.mono-ui-changed ]; then
+              echo "let's do this"
+            else
+              echo "nothing to do"
+            fi
+
+      - run:
+          name: Test common
+          command: yarn test --scope=@mono/ui
+
+  cra:
+    <<: *defaults
+    working_directory: ~/monorepo-builds
+    steps:
+      - checkout: { path: ~/monorepo-builds }
+      - attach_workspace: { at: . }
+      - run:
+          name: Check whether project changed
+          command: |
+            if [ -e .project-metadata/.mono-cra-changed ]; then
+              echo "let's do this"
+            else
+              echo "nothing to do"
+            fi
+
+      - run:
+          name: Test cra
+          command: yarn test --scope=@mono/cra
+
+      - run:
+          name: Build cra
+          command: yarn build --scope=@mono/cra
+
+      - run:
+          name: Deployment
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo "Deploy master"
+            else
+              echo "Deploy branch ${CIRCLE_BRANCH}"
+            fi
+
+  razzle:
+    <<: *defaults
+    working_directory: ~/monorepo-builds
+    steps:
+      - checkout: { path: ~/monorepo-builds }
+      - attach_workspace: { at: . }
+      - run:
+          name: Check whether project changed
+          command: |
+            if [ -e .project-metadata/.mono-razzle-changed ]; then
+              echo "let's do this"
+            else
+              echo "nothing to do"
+            fi
+
+      - run:
+          name: Test razzle
+          command: yarn test --scope=@mono/razzle
+
+      # If you are not from @PalmerHQ, you should be careful here. @PalmerHQ we include
+      # all node_modules in our final webpack'd server bundle for Razzle builds. This
+      # allows us to deploy Razzle's build folder without needing node_modules
+      # present on the server. This may not be what you want. If you do not want this,
+      # then you may wish to alter the razzle.config.js file or this file accordingly.
+      - run:
+          name: Build razzle
+          command: yarn build --scope=@mono/razzle
+
+      - run:
+          name: Deployment
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo "Deploy master"
+            else
+              echo "Deploy branch ${CIRCLE_BRANCH}"
+            fi
+
+workflows:
+  version: 2
+
+  build_test_deploy:
+    jobs:
+      - clone_and_hash
+      - bootstrap:
+          requires:
+            - clone_and_hash
+
+      # Shared Packages
+      - common:
+          requires:
+            - clone_and_hash
+            - bootstrap
+      - ui:
+          requires:
+            - clone_and_hash
+            - bootstrap
+            - common
+
+      # Applications and Services
+      - cra:
+          requires:
+            - clone_and_hash
+            - bootstrap
+            - common
+            - ui
+      - razzle:
+          requires:
+            - clone_and_hash
+            - bootstrap
+            - common
+            - ui

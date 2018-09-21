@@ -1,0 +1,25 @@
+{
+  "name": "@mono/common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "module": "build/index.js",
+  "typings": "build/index.d.ts",
+  "scripts": {
+    "prepare": "tsc -p tsconfig.build.json",
+    "start": "tsc -p tsconfig.build.json -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^8.0.28",
+    "@types/jest": "^22.1.1",
+    "jest": "^22.1.4",
+    "ts-jest": "^22.0.2",
+    "tslint": "^5.9.1",
+    "tslint-react": "^3.4.0",
+    "typescript": "2.6.2"
+  }
+}

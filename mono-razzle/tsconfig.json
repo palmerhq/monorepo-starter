@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "jsx": "react",
+    "lib": ["es6", "es2015", "es2017", "dom"],
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "es5",
+    "rootDir": "src"
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "jest",
+    "razzle.config.js",
+    "public"
+  ],
+  "include": ["src", "typings"],
+  "types": ["node", "webpack-env"]
+}
