@@ -2,23 +2,24 @@
 
 This is a polyglot monorepo boilerplate for The Palmer Group. It is a starter monorepo comprised of TypeScript, apps, TypeScript packages, placeholder JVM and Python apps and an example deployment workflow.
 
-
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-**Table of Contents**
 
 - [Overview](#overview)
   - [What's inside](#whats-inside)
 - [Tweaking for your project](#tweaking-for-your-project)
-- [Referencing packages from other packages/apps](#referencing-packages-from-other-packagesapps)
-- [Installing](#installing)
-- [Development](#development)
-- [Package Management](#package-management)
-  - [Installing a module from Yarn](#installing-a-module-from-yarn)
-  - [Uninstalling a module from a package](#uninstalling-a-module-from-a-package)
-- [Package Versioning and TS Paths](#package-versioning-and-ts-paths)
-  - [Altering paths and package names](#altering-paths-and-package-names)
+- [TypeScript](#typescript)
+  - [Referencing packages from other packages/apps](#referencing-packages-from-other-packagesapps)
+  - [Installing](#installing)
+  - [Development](#development)
+  - [Package Management](#package-management)
+    - [Installing a module from Yarn](#installing-a-module-from-yarn)
+    - [Uninstalling a module from a package](#uninstalling-a-module-from-a-package)
+  - [Package Versioning and TS Paths](#package-versioning-and-ts-paths)
+    - [Altering paths and package names](#altering-paths-and-package-names)
+- [JVM](#jvm)
+  - [Kotlin](#kotlin)
+- [Python](#python)
 - [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -43,7 +44,9 @@ This repo includes multiple packages and applications for a hypothetical project
 
 You should run a search and replace on the word `mono` and replace with your project name. Rename folders from `mono-xxx` as well. Lastly, `-razzle` and `-cra` are just placeholders. You should carefully replace them with their proper names as well like `-web`,`-admin`, `-api`, or `-whatever-makes-sense`.
 
-## Referencing packages from other packages/apps
+## TypeScript
+
+### Referencing packages from other packages/apps
 
 Each package can be referenced within other packages/app files by importing from `@<name>/<folder>` (kind of like an npm scoped package).
 
@@ -75,7 +78,7 @@ export default App;
 
 For more info, see the section on [package versioning](#package-versioning-and-ts-paths)
 
-## Installing
+### Installing
 
 Install lerna globally.
 
@@ -90,7 +93,7 @@ rm -rf .git
 yarn install
 ```
 
-## Development
+### Development
 
 Lerna allows some pretty nifty development stuff. Here's a quick rundown of stuff you can do:
 
@@ -104,11 +107,11 @@ Lerna allows some pretty nifty development stuff. Here's a quick rundown of stuf
 - _`lerna clean`_: Clean up all node_modules
 - _`lerna bootstrap`_: Rerun lerna's bootstrap command
 
-## Package Management
+### Package Management
 
 \*\*IF you run `yarn add <module>` or `npm install <module>` from inside a project folder, you will break your symlinks.\*\* To manage package modules, please refer to the following instructions:
 
-### Installing a module from Yarn
+#### Installing a module from Yarn
 
 To add a new npm module to ALL packages, run
 
@@ -126,13 +129,13 @@ lerna add classnames --scope=@mono/ui
 lerna add @types/classnames @types/jest --scope=@mono/ui --dev
 ```
 
-### Uninstalling a module from a package
+#### Uninstalling a module from a package
 
 Unfortunately, there is no `lerna remove` or `lerna uninstall` command. Instead, you should remove the target module from the relevant package or packages' `package.json` and then run `lerna bootstrap` again.
 
 Reference issue: https://github.com/lerna/lerna/issues/1229#issuecomment-359508643
 
-## Package Versioning and TS Paths
+### Package Versioning and TS Paths
 
 None of the packages in this setup are _ever_ published to NPM. Instead, each shared packages' (like `mono-common` and `mono-ui`) have build steps (which are run via `yarn prepare`) and get built locally and then symlinked. This symlinking solves some problems often faced with monorepos:
 
@@ -159,7 +162,7 @@ Long story short, this means that you can open up this whole thing at the root d
 
 You are welcome.
 
-### Altering paths and package names
+#### Altering paths and package names
 
 If you don't like the `@mono/<folder>` you can change it to whatever you want to. For example, you may want to change it to `mono-<folder>` so it exactly matches the folder names.
 
@@ -181,6 +184,16 @@ lerna add axios --scope=@mono/common
 # new (changed to mono-common)
 lerna add axios --scope=mono-common
 ```
+
+## JVM
+
+### Kotlin
+
+Not open source yet. Refer to internal Palmer Group documentation. Deployment workflow for the `mono-jvm` folder is a stub.
+
+## Python
+
+Not open source yet. Refer to internal Palmer Group documentation. Deployment workflow for the `mono-python` folder is a stub.
 
 ## Inspiration
 
