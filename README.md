@@ -1,6 +1,8 @@
 # TypeScript Monorepo Starter
 
-This is a TypeScript (x React) monorepo boilerplate for The Palmer Group. It is a starter monorepo comprised of TS apps, packages, and example deployment workflows.
+This is a TypeScript (x React) monorepo boilerplate for The Palmer Group. It is a starter monorepo comprised of TS apps, packages, and example deployment workflows. 
+
+> For the polyglot monorepo starter (deployment/setup also includes goodies for JVM and Python backends/services), go to the [polyglot branch](https://github.com/palmerhq/typescript-monorepo-starter/tree/polyglot).
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
