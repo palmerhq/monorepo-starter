@@ -1,18 +1,28 @@
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # TypeScript Monorepo Starter
 
 This is a TypeScript (x React) monorepo boilerplate for The Palmer Group. It is a starter monorepo comprised of TS apps, packages, and example deployment workflows.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents**
+
 - [Overview](#overview)
   - [What's inside](#whats-inside)
 - [Tweaking for your project](#tweaking-for-your-project)
+- [Referencing packages from other packages/apps](#referencing-packages-from-other-packagesapps)
 - [Installing](#installing)
 - [Development](#development)
 - [Package Management](#package-management)
   - [Installing a module from Yarn](#installing-a-module-from-yarn)
   - [Uninstalling a module from a package](#uninstalling-a-module-from-a-package)
+- [Package Versioning and TS Paths](#package-versioning-and-ts-paths)
+  - [Altering paths and package names](#altering-paths-and-package-names)
 - [Inspiration](#inspiration)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Overview
 
@@ -62,7 +72,7 @@ export default App;
 
 **IMPORTANT: YOU DO NOT NEED TO CREATE/OWN THE NPM ORGANIZATION OF YOUR PROJECT NAME BECAUSE NOTHING IS EVER PUBLISHED TO NPM.**
 
-For more info, see the section on [package versioning](#package-versioning)
+For more info, see the section on [package versioning](#package-versioning-and-ts-paths)
 
 ## Installing
 
