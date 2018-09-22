@@ -13,6 +13,7 @@
     "strictNullChecks": true,
     "strict": true,
     "pretty": true,
+    "jsx": "react",
     "suppressImplicitAnyIndexErrors": true
   }
 }
