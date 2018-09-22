@@ -173,4 +173,4 @@ lerna add axios --scope=mono-common
 
 ## Inspiration
 
-A LOT of this has been shameless take from [Quramy/lerna-yarn-workspaces-example](https://github.com/Quramy/lerna-yarn-workspaces-example).
+A LOT of this has been shameless taken from [Quramy/lerna-yarn-workspaces-example](https://github.com/Quramy/lerna-yarn-workspaces-example). So much so, in fact, you can read the original README.md in [WORKSPACE.md](./WORKSPACE.md)
