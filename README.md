@@ -5,6 +5,7 @@ This is a polyglot monorepo boilerplate for The Palmer Group. It is a starter mo
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
 - [Overview](#overview)
   - [What's inside](#whats-inside)
 - [Tweaking for your project](#tweaking-for-your-project)
@@ -20,6 +21,9 @@ This is a polyglot monorepo boilerplate for The Palmer Group. It is a starter mo
 - [JVM](#jvm)
   - [Kotlin](#kotlin)
 - [Python](#python)
+  - [Running locally](#running-locally)
+  - [Docker image](#docker-image)
+  - [Running the tests](#running-the-tests)
 - [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -195,12 +199,12 @@ Not open source yet. Refer to internal Palmer Group documentation. Deployment wo
 
 Inside of the `mono-python` folder is a "Hello World" [Flask](http://flask.pocoo.org/docs/1.0/) application and Docker setup.
 
-## Running locally
+### Running locally
 
 Set up Python environment:
 
 ```shell
-$ pipenv install
+pipenv install
 ```
 
 To create a virtual environment you just execute the `$ pipenv shell`.
@@ -208,43 +212,44 @@ To create a virtual environment you just execute the `$ pipenv shell`.
 Run a development server:
 
 ```shell
-$ FLASK_APP=helloworld flask run
+FLASK_APP=helloworld flask run
 ```
 
-## Docker image
+### Docker image
 
 Build the docker image:
 
 ```shell
-$ docker build -t flask-pipenv-helloworld .
+docker build -t flask-pipenv-helloworld .
 ```
 
 Run the Docker Container:
 
 ```shell
-$ docker run -p 8000:8000 flask-pipenv-helloworld
+docker run -p 8000:8000 flask-pipenv-helloworld
 ```
 
 You can find the container runtime details as shown below:
 
 ```shell
-$ docker ps
+docker ps
+# ...
 CONTAINER ID        IMAGE                             COMMAND                  CREATED             STATUS              PORTS                      NAMES
 80af0bce64c7        flask-pipenv-helloworld           "gunicorn -b0.0.0.0:…"   1 second ago        Up Less than a second   0.0.0.0:8000->8000/tcp     silly_goldstine
 ```
 
-## Running the tests
+### Running the tests
 
 Install the prerequisites:
 
 ```shell
-$ pipenv install --dev
+pipenv install --dev
 ```
 
 Runs tests:
 
 ```shell
-$ pipenv run python -m pytest
+pipenv run python -m pytest
 ```
 
 ## Inspiration
