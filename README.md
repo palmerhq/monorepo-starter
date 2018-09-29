@@ -32,7 +32,7 @@ This is a polyglot monorepo boilerplate for The Palmer Group. It is a starter mo
 
 ## Overview
 
-The repository is powered by [Lerna](https://github.com/lerna/lerna) and [Yarn](https://yarnpkg.com/en/). Lerna is reponsible for bootstrapping, installing, symlinking all of the packages/apps together.
+The repository is powered by [Lerna](https://github.com/lerna/lerna) and [Yarn](https://yarnpkg.com/en/). Lerna is responsible for bootstrapping, installing, symlinking all of the packages/apps together.
 
 ### What's inside
 
