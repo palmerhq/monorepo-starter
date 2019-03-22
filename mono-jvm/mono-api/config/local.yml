@@ -1,0 +1,35 @@
+env: local
+
+mongoDatabase: mono-local
+
+redisHost: localhost
+
+webUrl: http://localhost:3000
+
+awsRegion: us-east-1
+awsProfile: mono-local
+
+s3LocalPath: ~/dev/s3-local
+s3BucketData: mono-local-data
+s3BucketMedia: mono-local-media
+
+stripeSecretKey: REPLACE_ME
+stripeSigningSecret: not_in_use
+githubClientId: TBD
+githubClientSecret: TBD
+
+enableSlack: false
+slackUsername: mono
+slackChannel: mono
+slackIconUrl: https://mono.com/img/mono.png
+slackWebhookUrl: http://localhost
+
+emailService: mailcatcher
+
+logging:
+  level: INFO
+  loggers:
+    'io.swagger.converter.ModelConverters': ERROR
+
+swagger:
+  resourcePackage: com.mono.api.resources

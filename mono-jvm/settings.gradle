@@ -1,0 +1,5 @@
+rootProject.name = 'mono-jvm'
+
+include ':mono-api'
+
+project(':mono-api').projectDir = "$rootDir/mono-api" as File

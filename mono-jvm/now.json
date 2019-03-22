@@ -1,0 +1,9 @@
+{
+  "name": "mono-api",
+  "type": "docker",
+  "env": {
+    "STRIPE_SECRET_KEY": "@dev_mono_stripe_secret_key",
+    "MAILGUN_PRIVATE_KEY": "@prod_mono_mailgun_private_key"
+  },
+  "alias": ["mono-api"]
+}

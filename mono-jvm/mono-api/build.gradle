@@ -1,0 +1,95 @@
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.kapt'
+    id 'com.github.johnrengelman.shadow' version '4.0.3'
+}
+
+apply plugin: 'application'
+mainClassName = 'com.mono.api.app.MonoApiApplicationKt'
+
+group 'com.mono.api'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "http://maven.stardog.io" }
+}
+
+ext.dropwizard_version = '1.3.5'
+ext.starwizard_version = '0.2.1-SNAPSHOT'
+ext.stardao_version = '0.3.4-SNAPSHOT'
+ext.ratelimitj_version = '0.5.0'
+
+dependencies {
+    compile "io.dropwizard:dropwizard-core:$dropwizard_version"
+    compile "io.dropwizard:dropwizard-auth:$dropwizard_version"
+    compile "io.dropwizard:dropwizard-forms:$dropwizard_version"
+    compile (group: 'io.stardog.starwizard', name: 'starwizard-core', version: starwizard_version) {
+        exclude(module: 'dropwizard-swagger')
+    }
+    compile (group: 'io.stardog.starwizard', name: 'starwizard-mongodb', version: starwizard_version) {
+        exclude(module: 'dropwizard-swagger')
+    }
+    compile group: 'io.stardog.starwizard', name: 'starwizard-services', version:starwizard_version
+    compile group: 'io.stardog.dropwizard.worker', name: 'dropwizard-worker', version:'0.2.0-SNAPSHOT'
+    compile group: 'io.stardog.stardao', name: 'stardao-core', version:stardao_version
+    compile group: 'io.stardog.stardao', name: 'stardao-auto', version:stardao_version
+    compile (group: 'io.stardog.stardao', name: 'stardao-jersey', version:stardao_version) {
+        exclude(module: 'jersey-common')
+    }
+    compile (group: 'io.stardog.stardao', name: 'stardao-mongodb', version: stardao_version) {
+        exclude(module: 'mongo-java-driver')
+    }
+    compile(group: 'io.stardog', name: 'templatemail', version:'0.7.1-SNAPSHOT') {
+        exclude(module: 'sailthru-java-client')
+    }
+    compile(group: 'com.smoketurner', name: 'dropwizard-swagger', version:'1.3.7-1') {
+        exclude(module: 'annotations')
+        exclude(module: 'reflections')
+    }
+    compile 'org.reflections:reflections:0.9.10'
+    compile group: 'com.google.inject', name: 'guice', version:'4.2.0'
+    compile group: 'org.mongodb', name: 'mongo-java-driver', version:'3.6.3'
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
+    compile group: 'org.mindrot', name: 'jbcrypt', version:'0.4'
+    compile group: 'org.apache.commons', name: 'commons-csv', version:'1.5'
+    compile group: 'es.moki.ratelimitj', name: 'ratelimitj-core', version: ratelimitj_version
+    compile group: 'es.moki.ratelimitj', name: 'ratelimitj-inmemory', version: ratelimitj_version
+    compile group: 'es.moki.ratelimitj', name: 'ratelimitj-dropwizard', version: ratelimitj_version
+    compile group: 'io.stardog.aws.local', name: 'aws-local', version: '0.1.0-SNAPSHOT'
+
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test'
+    testCompile group: 'com.github.fakemongo', name: 'fongo', version:'2.2.0-RC2'
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.3.1")
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.22.0'
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+
+    kapt group: 'io.stardog.stardao', name: 'stardao-auto', version:stardao_version
+}
+
+test {
+    useJUnitPlatform() {
+        includeEngines 'junit-jupiter'
+    }
+}
+shadowJar {
+    mergeServiceFiles()
+    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
+    manifest {
+        attributes 'Implementation-Title': rootProject.name
+        attributes 'Implementation-Version': rootProject.version
+        attributes 'Implementation-Vendor-Id': rootProject.group
+        attributes 'Build-Time': ZonedDateTime.now(ZoneId.of("UTC"))
+                .format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
+        attributes 'Built-By': InetAddress.localHost.hostName
+        attributes 'Created-By': 'Gradle ' + gradle.gradleVersion
+        attributes 'Main-Class': mainClassName
+    }
+    archiveName 'mono-api-1.0-SNAPSHOT.jar'
+}
