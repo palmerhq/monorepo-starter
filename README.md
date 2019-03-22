@@ -42,6 +42,7 @@ This repo includes multiple packages and applications for a hypothetical project
 - `mono-ui`: Component library (TypeScript x Storybook) (depends on `mono-common`)
 - `mono-cra`: Create React App x TypeScript (depends on `mono-common` + `mono-ui`)
 - `mono-razzle`: Razzle x TypeScript (depends on `mono-common` + `mono-ui`)
+- `mono-jvm`: [Dropwizard](https://github.com/dropwizard) x Kotlin
 - `.circle`: Some example CircleCI v2 workflows for various monorepo setups (including polyglot)
 
 ## Tweaking for your project
