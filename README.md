@@ -193,7 +193,7 @@ lerna add axios --scope=mono-common
 
 ### Kotlin
 
-Not open source yet. Refer to internal Palmer Group documentation. Deployment workflow for the `mono-jvm` folder is a stub.
+Refer to internal Palmer Group documentation. Deployment workflow for the `mono-jvm` folder is a stub.
 
 ## Python
 
